@@ -19,11 +19,10 @@ jobs:
           # Setup LXD
           sudo snap install lxd --channel=6/stable
           sudo lxd init --auto
-          sudo usermod -aG lxd "$USER"
+          sudo chmod a+wr /var/snap/lxd/common/lxd/unix.socket
           # Setup snaps
           sudo snap install just --classic
           sudo snap install workshop --classic
           sudo snap install sdkcraft --channel=latest/edge --classic
       - name: Test the Workshop SDK
-        run:
-          just test
+        run: just test

@@ -21,7 +21,7 @@ jobs:
           # Setup LXD
           sudo snap install lxd --channel=6/stable
           sudo lxd init --auto
-          sudo usermod -aG lxd "$USER"
+          sudo chmod a+wr /var/snap/lxd/common/lxd/unix.socket
           # Setup snaps
           sudo snap install just --classic
           sudo snap install workshop --classic
@@ -29,5 +29,4 @@ jobs:
       - name: Release the Workshop SDK
         env:
           SDKCRAFT_STORE_CREDENTIALS: ${{ secrets.SDKCRAFT_STORE_CREDENTIALS }}
-        run:
-          just release
+        run: just release
