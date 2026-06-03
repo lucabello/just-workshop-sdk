@@ -22,6 +22,9 @@ jobs:
           sudo snap install lxd --channel=6/stable
           sudo lxd init --auto
           sudo chmod a+wr /var/snap/lxd/common/lxd/unix.socket
+          # Fix Docker/LXD firewall conflict
+          sudo iptables -F FORWARD
+          sudo iptables -P FORWARD ACCEPT
           # Setup snaps
           sudo snap install just --classic
           sudo snap install workshop --classic
