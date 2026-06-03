@@ -134,9 +134,8 @@ are welcome!
 
 ## License and copyright
 
-Copyright 2025 Canonical Ltd.
+Copyright 2026 Canonical Ltd.
 
-This SDK is licensed under the
-[GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.html).
+This SDK is released under the license defined in [LICENSE](LICENSE).
 
 Just is licensed under the [CC0-1.0](https://creativecommons.org/publicdomain/zero/1.0/).
