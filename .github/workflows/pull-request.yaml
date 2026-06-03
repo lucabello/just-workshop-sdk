@@ -1,0 +1,29 @@
+name: Pull Request
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test the Workshop SDK
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          # Setup LXD
+          sudo snap install lxd --channel=6/stable
+          sudo lxd init --auto
+          sudo usermod -aG lxd "$USER"
+          # Setup snaps
+          sudo snap install just --classic
+          sudo snap install workshop --classic
+          sudo snap install sdkcraft --channel=latest/edge --classic
+      - name: Test the Workshop SDK
+        run:
+          just test

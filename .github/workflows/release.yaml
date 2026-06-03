@@ -1,0 +1,33 @@
+name: Build and Release SDK
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: Release the Workshop SDK
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install dependencies
+        run: |
+          # Setup LXD
+          sudo snap install lxd --channel=6/stable
+          sudo lxd init --auto
+          sudo usermod -aG lxd "$USER"
+          # Setup snaps
+          sudo snap install just --classic
+          sudo snap install workshop --classic
+          sudo snap install sdkcraft --channel=latest/edge --classic
+      - name: Release the Workshop SDK
+        env:
+          SDKCRAFT_STORE_CREDENTIALS: ${{ secrets.SDKCRAFT_STORE_CREDENTIALS }}
+        run:
+          just release

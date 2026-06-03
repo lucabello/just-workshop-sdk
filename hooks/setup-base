@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+
+# Add just to PATH
+cat <<EOF >/etc/profile.d/just.sh
+export PATH="${SDK}/usr/bin:\$PATH"
+EOF
+
+# Generate shell completions
+"$SDK"/usr/bin/just --completions bash > /etc/bash_completion.d/just

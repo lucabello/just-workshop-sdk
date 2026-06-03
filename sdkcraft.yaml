@@ -1,0 +1,39 @@
+name: just
+adopt-info: just
+summary: A handy command runner for project-specific commands
+description: |
+  This SDK provides Just, a command runner for saving and executing
+  project-specific commands. Just uses justfiles to define recipes—commands
+  that can be run from any subdirectory of your project.
+license: CC0-1.0
+build-base: ubuntu@24.04
+platforms:
+  amd64:
+    build-on: [amd64]
+    build-for: [amd64]
+  arm64:
+    build-on: [amd64]
+    build-for: [arm64]
+
+parts:
+  just:
+    plugin: dump
+    source: .
+    source-type: local
+    override-pull: |
+      VERSION=$(cat "$CRAFT_PROJECT_DIR/VERSION")
+      craftctl set version="$VERSION"
+
+      case "$CRAFT_TARGET_ARCH" in
+        amd64) ARCH="x86_64" ;;
+        arm64) ARCH="aarch64" ;;
+        *) echo "Unsupported architecture: $CRAFT_TARGET_ARCH"; exit 1 ;;
+      esac
+
+      curl -fLO "https://github.com/casey/just/releases/download/${VERSION}/just-${VERSION}-${ARCH}-unknown-linux-musl.tar.gz"
+      tar -xzf "just-${VERSION}-${ARCH}-unknown-linux-musl.tar.gz" -C "$CRAFT_PART_SRC"
+      rm "just-${VERSION}-${ARCH}-unknown-linux-musl.tar.gz"
+    organize:
+      just: usr/bin/just
+    stage:
+      - usr/bin/just

@@ -1,0 +1,16 @@
+summary: Bash completions are installed
+
+prepare: |
+  envsubst '${BASE}' <workshop.yaml.in >workshop.yaml
+  workshop launch
+
+restore: |
+  workshop remove || true
+
+execute: |
+  # bash completions must have been installed by setup-base
+  workshop exec -- bash -c 'test -f /etc/bash_completion.d/just'
+
+debug: |
+  workshop tasks
+  workshop exec -- bash -c 'ls -la /etc/bash_completion.d/ || true'

@@ -1,0 +1,16 @@
+project: just
+
+path: /home/ubuntu/project
+
+backends:
+  lxd:
+    systems:
+      - ubuntu-24.04:
+          username: ubuntu
+          vm: true
+
+suites:
+  main/:
+    summary: Smoke-test the Just SDK inside workshops
+    environment:
+      BASE: ubuntu@24.04

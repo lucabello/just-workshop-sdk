@@ -1,0 +1,5 @@
+# sdkcraft build artifacts
+*.sdk
+
+# Local test workshop
+workshop.yaml

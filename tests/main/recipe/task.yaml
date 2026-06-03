@@ -1,0 +1,34 @@
+summary: Just can run recipes from a justfile
+
+prepare: |
+  envsubst '${BASE}' <workshop.yaml.in >workshop.yaml
+
+  cat > justfile << 'EOF'
+  default:
+      @echo 'Hello from Just!'
+
+  greet name:
+      @echo 'Hello, {{name}}!'
+  EOF
+
+  workshop launch
+
+restore: |
+  workshop remove || true
+  rm -f justfile
+
+execute: |
+  # test default recipe
+  workshop exec -- just | grep -q 'Hello from Just!'
+
+  # test recipe with argument
+  workshop exec -- just greet World | grep -q 'Hello, World!'
+
+  # test --list
+  workshop exec -- just --list | grep -q 'default'
+  workshop exec -- just --list | grep -q 'greet'
+
+debug: |
+  workshop tasks
+  workshop exec -- bash -c 'cat /project/justfile || true'
+  workshop exec -- bash -c 'just --list || true'
